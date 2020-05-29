@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title>London Pedal Bike Accident</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+     <!-- Mapbox GL -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
+    <!-- dimple -->
+    <script charset="utf-8" src="https://d3js.org/d3.v4.min.js"></script>
+    <script charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/dimple/2.3.0/dimple.latest.min.js"></script>
+
+
+<style>
+     body {
+         margin: 0;
+         padding: 0;
+         font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+    }
+
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    h2 {
+        font-size: 14px;
+        line-height: 20px;
+        margin-bottom: 10px;
+    }
+
+    a {
+        text-decoration: none;
+        color: #2dc4b2;
+    }
+
+    
+    #console {
+        position: absolute;
+        width: 240px;
+        margin: 10px;
+        padding: 10px 20px;
+        background-color: white;
+        height:350px;
+    }
+    
+    .session {
+        margin-bottom: 50px;
+        position: absolute;
+        width:230px;
+    }
+
+    .row {
+        height: 12px;
+        width: 100%;
+    }
+
+    .colors {
+        background: linear-gradient(to right, #669ec4, #a2719b, #aa5e79);
+        margin-bottom: 5px;
+    }
+
+    .label {
+        width: 15%;
+        display: inline-block;
+        text-align: center;
+    }
+    
+    #chartContainer {width: 840px; margin: auto; margin-top: 50px; }
+    #chartContainer p {margin-right: 5px; margin-bottom: 5px; margin-top: 0; padding: 0;}
+    #charttitle {font: bold 22px Verdana, sans-serif;}
+    
+    </style>
+    </head>
+    
+<body>
+<body>
+    <div id='map'></div>
+    
+    <div id='console'>
+    <h1>London Pedal Bike Accident</h1>
+        <p>Data: <a href='https://tfl.gov.uk/corporate/safety-and-security/road-safety/london-collision-map'>London Pedal Bike Accident</a> in 2018</p>
+
+    
+    <div class='session'>
+        <h2>Casualty</h2>
+        <div class='row colors'>
+        </div>
+        <div class='row labels'>
+            <div class='label'>0</div>
+            <div class='label'>0.5</div>
+            <div class='label'>1</div>
+            <div class='label'>1.5</div>
+            <div class='label'>2</div>
+            <!-- <div class='label'>2.5</div> -->
+            <div class='label'>3</div>
+        </div>
+        <div class='session' id='sliderbar'>
+        <h2>Time: <label id='active-time'> 12PM </label></h2>
+        <input id='slider' class='row' type='range' min='0' max='23' step='1' value='12' />
+        <div class='session'>
+            <h2>Day of the week</h2>
+            <div class='row' id='filters'>
+                <input id='all' type='radio' name='toggle' value='all' checked='checked'>
+                <label for='all'>All</label>
+                <input id='weekday' type='radio' name='toggle' value='weekday'>
+                <label for='weekday'>Weekday</label>
+                <input id='weekend' type='radio' name='toggle' value='weekend'>
+                <label for='weekend'>Weekend</label>
+            </div>
+    </div>
+    </div>
+    </div>  
+
+    </div>
+    <div class = 'insert_web' style = "z-index: 9999999; position: fixed; bottom: 20px;">
+        <div id="tab_1">
+            <iframe src="accidents_2.html"
+                    frameborder="0"
+                    height="240"
+                    width="650"
+                    scrolling="0"
+            ></iframe>
+        </div>
+    </div>
+    <div id="chartContainer">
+        <p id="charttitle">Number of Casualties Throughout the Year</p>
+    </div>
+    
+    
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoidWNmbnljdSIsImEiOiJja2Flajc2ajUwM3AxMnJvZ292bzl6eXRtIn0.39QxD0WHqmhmk6yO5xqZ0Q';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/ucfnycu/cka59fwb20pta1iob806pnwjs',
+            center: [-0.127,51.509],
+            zoom: 11.65
+        });
+        
+        map.on('load', function() {
+            
+            map.addSource('bike', {
+                type: 'vector',
+                url: 'mapbox://ucfnycu.ck94r5j3a02cr2snnyuogjuv1-3w099'
+            });
+                  map.addLayer({
+                      'id': 'accidents',
+                      'type': 'circle',
+                       source: {
+                            type: 'vector',
+                            url: 'mapbox://ucfnycu.ck9plh9lg06hj2lpjh1fh0ydb-543t6'
+                        }, 
+                      'source-layer': 'accident_1',
+                      paint: {
+                            'circle-radius':{
+                                    property: 'casualties',
+                                    type: "exponential",
+                                    stops:[
+                                        [{zoom: 11, value: 1}, 10],
+                                        [{zoom: 11, value: 2}, 15],
+                                        [{zoom: 11, value: 3}, 20],
+                                        [{zoom: 15, value: 1}, 20],
+                                        [{zoom: 15, value: 2}, 35],
+                                        [{zoom: 15, value: 3}, 50],
+                                        
+                                    ]
+                            },
+                            'circle-color': {
+                                   property: 'casualties',
+                                   type: "exponential",
+                                    stops: [
+                                        [1, "#669ec4"],
+                                        [2, "#a2719b"],
+                                        [3, "#aa5e79"]
+                                        ]
+                            },
+                            'circle-opacity': 0.6
+                        },
+                      filer:['all', filterHour, filterDay]
+                      
+                    });
+                });
+
+        var filterHour = ['==', ['number', ['get', 'Hour']], 12];
+        var filterDay = ['!=', ['string', ['get', 'day']], 'placeholder'];
+        
+        document.getElementById('slider').addEventListener('input', function(e) {
+        var time = parseInt(e.target.value);
+            // update the map
+         filterHour = ['==', ['number', ['get', 'time']], time];
+            map.setFilter('accidents', ['all', filterHour, filterDay]);
+            
+            var ampm = time >= 12 ? 'PM' : 'AM';
+            var hour12 = time % 12 ? time % 12 : 12;
+            
+         document.getElementById('active-time').innerText = hour12 + ampm;
+        });
+        
+           
+        document.getElementById('filters').addEventListener('change', function(e) {
+            var Day = e.target.value;
+            if (Day === 'all') {
+                filterDay = ['!=', ['string', ['get', 'day']], 'placeholder'];
+            } else if (Day === 'weekday') {
+                filterDay = ['match', ['get', 'day'], ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], true, false];
+            } else if (Day === 'weekend') {
+                filterDay = ['match', ['get', 'day'], ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], false, true];
+            } 
+            
+            map.setFilter('accidents', ['all', filterHour,filterDay]);
+        });
+               
+        d3.csv("data://2018_bike_accident.csv", function (YearlyAccident) {
+            var svg = dimple.newSvg("#chartContainer", 840, 440);
+            var myChart = new dimple.chart(svg, YearlyAccident);
+            myChart.setBounds(60, 15, 700, 300);
+            myChart.defaultColors = [
+                new dimple.color("#6EA38F")
+            ];
+            var x = myChart.addCategoryAxis("x", "Accident Date"); 
+            var y = myChart.addMeasureAxis("y", "Casualties"); 
+            y.title = "Number of Casualties";
+            var s = myChart.addSeries(null, dimple.plot.line);
+            myChart.draw();
+        });
+       
+        
+        
+    </script>
+    
+</body>
+<html>
+    

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+        <script src="http://d3js.org/d3.v4.min.js"></script>
+        <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <style>
+            body { margin: 0; padding: 0; }
+	       #map { position: absolute; top: 0; bottom: 0; width: 100%; z-index: -10; }
+           #chartContainer{position: absolute;top: 400px;}
+           .btn {position: absolute; left:0; bottom:0px; z-index: 9;}
+            body { font: 12px Arial;}
+            path { stroke: steelblue; stroke-width: 2;fill: none;}
+            .axis path,.axis line {fill: none;stroke: grey;stroke-width: 1;shape-rendering: crispEdges;}
+            .btn:after {font-family: "Glyphicons Halflings";content: "\e114";float: right;margin-left: 3px;}
+            .btn.collapsed:after {content: "\e080";}
+            .nvi{position: absolute; left:0; top:0px; z-index: 9;background-color: lightblue;color:darkgrey;font-size:20px}
+            .nvi:hover {background-color: skyblue;}
+            #legend {position: absolute;background-color: #FFFF; right:0;bottom:5px;padding: 10px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);line-height: 18px;height: 130px;margin-bottom: 21px;width: 145px;border: 2px solid lightgrey;opacity: 0.8;}
+            .legendName{font-size: 16px;margin-left: 20px;}
+            #airlegend {position: absolute;background-color: #FFFF; right:150px; bottom:5px;padding: 10px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);line-height: 18px;height: 140px;margin-bottom: 21px;width: 145px;border: 2px solid lightgrey;opacity: 0.8;}
+            #airlegend img{width:20px; height:20px}
+            .airlegend {font-size: 16px;margin-left: 20px;}
+            .btn1 {position: absolute;right:300px; bottom:30px; z-index: 9;border: 2px solid grey;padding: 10px;
+  border-radius: 25px;}
+            .btn1:hover{background-color: deepskyblue;}
+            .btn2 {position: absolute;right:303px; bottom:80px; z-index: 9;border: 2px solid grey;padding: 10px;
+  border-radius: 25px;}
+            .btn2:hover{background-color: MediumSeaGreen;}
+        </style>
+           
+        
+    </head>
+    
+    <body>
+        <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.js"></script>
+        <link
+        rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css"
+        type="text/css"
+        />
+        
+        <div id="map"></div>
+        <div class='map-overlay' id='legend'></div>
+        <div class='map-overlay' id='airlegend'></div>
+        
+        <button type="button" class="nvi" id='loc' onclick="getLocation()"><span class="glyphicon glyphicon-map-marker" aria-hidden="true" ></span></button>
+        <button type="button" class="btn1 btn-primary" data-toggle="collapse" data-target=.markers>Show/Off Bike Points</button>
+        <button type="button" class="btn2 btn-primary" data-toggle="collapse" data-target=.air>Show/Off Air Quality</button>
+        
+        <button type="button" class="btn btn-sm btn-info collapsed" data-toggle="collapse" data-target="#chartContainer"></button>
+        <svg id="chartContainer" class="chart in" width="600" height="250">
+            
+            <div id="charttitle"> </div>
+            <div id ="calories"></div>
+        </svg>
+        <script src='config.js'></script>
+        <script src="rf.js"></script>
+    
+    
+    </body>
+</html>
