@@ -245,7 +245,7 @@ element.addEventListener('mouseleave', () => markerPopup.togglePopup());
 
 
 // add Air Quality stations    
-var airurl = 'http://api.erg.kcl.ac.uk/AirQuality/Hourly/MonitoringIndex/GroupName=London/Json';
+var airurl = 'https://api.erg.kcl.ac.uk/AirQuality/Hourly/MonitoringIndex/GroupName=London/Json';
 var reqair = new XMLHttpRequest(); 
 reqair.responseType='json';
 reqair.open('GET', airurl, true);

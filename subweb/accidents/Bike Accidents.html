@@ -218,22 +218,6 @@
             
             map.setFilter('accidents', ['all', filterHour,filterDay]);
         });
-               
-        d3.csv("data://2018_bike_accident.csv", function (YearlyAccident) {
-            var svg = dimple.newSvg("#chartContainer", 840, 440);
-            var myChart = new dimple.chart(svg, YearlyAccident);
-            myChart.setBounds(60, 15, 700, 300);
-            myChart.defaultColors = [
-                new dimple.color("#6EA38F")
-            ];
-            var x = myChart.addCategoryAxis("x", "Accident Date"); 
-            var y = myChart.addMeasureAxis("y", "Casualties"); 
-            y.title = "Number of Casualties";
-            var s = myChart.addSeries(null, dimple.plot.line);
-            myChart.draw();
-        });
-       
-        
         
     </script>
     
